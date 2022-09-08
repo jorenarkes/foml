@@ -106,17 +106,18 @@ def evaluate_classifier(
     test_X: List[Union[int, str]],
     test_y: List[Union[int, str]],
     args: argparse.Namespace,
+    cm_title,
 ) -> None:
     preds = clf.predict(test_X)
     accuracy = accuracy_score(preds, test_y)
 
     if args.cm or args.plot:
-        show_confusion_matrix(test_y, preds, args)
+        show_confusion_matrix(test_y, preds, args, cm_title)
 
     return f"Accuracy: {accuracy}, classifier: {clf}"
 
 
-def show_confusion_matrix(test_y, pred_y, args):
+def show_confusion_matrix(test_y, pred_y, args, cm_title):
     cm = confusion_matrix(test_y, pred_y, labels=sorted(list(set(test_y))))
 
     if args.norm:
@@ -133,7 +134,7 @@ def show_confusion_matrix(test_y, pred_y, args):
             plot_confusion_matrix,
         )  # Import here due to potential matplotlib issues
 
-        plot_confusion_matrix(cm, test_y)
+        plot_confusion_matrix(cm, test_y, title=cm_title)
 
     print(classification_report(test_y, pred_y, labels=sorted(list(set(test_y)))))
 
