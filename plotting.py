@@ -13,6 +13,7 @@ __maintainer__ = "Mike Zhang"
 __email__ = "mikz@itu.dk"
 __status__ = "early alpha"
 
+import os
 from datetime import datetime
 from typing import List
 
@@ -36,4 +37,6 @@ def plot_confusion_matrix(
     plt.tight_layout()
     plt.ylabel("True label")
     plt.xlabel("Predicted label")
+    if not os.path.exists("plot_images"):
+        os.makedirs("plot_images")
     plt.savefig("plot_images/" + datetime.now().isoformat() + "-" + title + "-plot.png")
