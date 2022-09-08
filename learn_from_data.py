@@ -116,7 +116,7 @@ def evaluate_classifier(
     return f"Accuracy: {accuracy}, classifier: {clf}"
 
 
-def show_confusion_matrix(dataset, test_y, pred_y, args):
+def show_confusion_matrix(test_y, pred_y, args):
     cm = confusion_matrix(test_y, pred_y, labels=sorted(list(set(test_y))))
 
     if args.norm:

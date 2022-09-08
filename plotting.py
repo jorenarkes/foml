@@ -19,15 +19,9 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-from datetime import datetime
-
 
 def plot_confusion_matrix(
-    dataset: str,
-    cm: np.ndarray,
-    test_y: List[str],
-    title="Confusion matrix",
-    cmap=plt.cm.Blues,
+    cm: np.ndarray, test_y: List[str], title="Confusion matrix", cmap=plt.cm.Blues
 ):
     plt.figure()
     plt.imshow(
@@ -41,4 +35,4 @@ def plot_confusion_matrix(
     plt.tight_layout()
     plt.ylabel("True label")
     plt.xlabel("Predicted label")
-    plt.savefig(datetime.now().isoformat() + "-" + dataset + "-plot.png")
+    plt.show()
