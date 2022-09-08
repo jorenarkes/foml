@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+"""
 Plotting utilities.
-'''
+"""
 
 __author__ = "Johannes Bjerva, and Malvina Nissim (modified by Mike Zhang)"
 __credits__ = ["Johannes Bjerva", "Malvina Nissim"]
@@ -19,16 +19,26 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
+from datetime import datetime
 
-def plot_confusion_matrix(cm: np.ndarray, test_y: List[str], title='Confusion matrix', cmap=plt.cm.Blues):
+
+def plot_confusion_matrix(
+    dataset: str,
+    cm: np.ndarray,
+    test_y: List[str],
+    title="Confusion matrix",
+    cmap=plt.cm.Blues,
+):
     plt.figure()
-    plt.imshow(np.vstack((cm, np.zeros(cm.shape[0]))), interpolation='nearest', cmap=cmap)
+    plt.imshow(
+        np.vstack((cm, np.zeros(cm.shape[0]))), interpolation="nearest", cmap=cmap
+    )
     plt.title(title)
     plt.colorbar()
     tick_marks = np.arange(cm.shape[0])
     plt.xticks(tick_marks, sorted(list(set(test_y))), rotation=45)
     plt.yticks(tick_marks, sorted(list(set(test_y))))
     plt.tight_layout()
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
-    plt.show()
+    plt.ylabel("True label")
+    plt.xlabel("Predicted label")
+    plt.savefig(datetime.now().isoformat() + "-" + dataset + "-plot.png")
