@@ -21,7 +21,7 @@ jobs:
           python-version: 3.8
 
       - name: Install Black
-        run: pip install black
+        run: pip install black[jupyter]
 
       - name: Run checks
-        run: black . --diff --check
+        run: black . --diff --check -t py37
