@@ -13,6 +13,7 @@ __status__ = "Testing"
 
 import argparse
 import logging
+import time
 
 from feature_extractor import (
     features_to_one_hot,
@@ -118,7 +119,12 @@ if __name__ == "__main__":
     for clf in classifiers:
         if args.test:
             # takes train and dev as training set.
+            train_start_time = time.time()
             clf.fit(train_and_dev_X, train_and_dev_y)
+            logging.info(
+                "Training time (seconds): "
+                + str(round(time.time() - train_start_time, 2)),
+            )
             training_result: str = evaluate_classifier(
                 clf,
                 train_and_dev_X,
@@ -127,6 +133,7 @@ if __name__ == "__main__":
                 cm_title=f"Confusion Matrix - train set - {clf}",
             )
             logging.info(f"Results on the train set:\n{training_result}\n")
+            eval_start_time = time.time()
             test_result: str = evaluate_classifier(
                 clf,
                 test_X,
@@ -134,11 +141,20 @@ if __name__ == "__main__":
                 args,
                 cm_title=f"Confusion Matrix - test test - {clf}",
             )
+            logging.info(
+                "Evaluation time (seconds): "
+                + str(round(time.time() - eval_start_time, 2)),
+            )
             logging.info(f"Results on the test set:\n{test_result}\n")
 
         else:
             # takes train set and divides it in 70/30 split again.
+            train_start_time = time.time()
             clf.fit(train_X, train_y)
+            logging.info(
+                "Training time (seconds): "
+                + str(round(time.time() - train_start_time, 2)),
+            )
             training_result: str = evaluate_classifier(
                 clf,
                 train_X,
@@ -147,7 +163,12 @@ if __name__ == "__main__":
                 cm_title=f"Confusion Matrix - train set - {clf}",
             )
             logging.info(f"Results on the train set:\n{training_result}\n")
+            eval_start_time = time.time()
             dev_result: str = evaluate_classifier(
                 clf, dev_X, dev_y, args, cm_title=f"Confusion Matrix - dev set - {clf}"
+            )
+            logging.info(
+                "Evaluation time (seconds): "
+                + str(round(time.time() - eval_start_time, 2)),
             )
             logging.info(f"Results on the dev set:\n{dev_result}\n")
