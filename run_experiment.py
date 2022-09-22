@@ -13,7 +13,13 @@ __status__ = "Testing"
 
 import argparse
 import logging
+import os
 import time
+from datetime import datetime
+
+from matplotlib import pyplot as plt
+from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
 
 from feature_extractor import (
     features_to_one_hot,
@@ -172,3 +178,13 @@ if __name__ == "__main__":
                 + str(round(time.time() - eval_start_time, 2)),
             )
             logging.info(f"Results on the dev set:\n{dev_result}\n")
+
+        if isinstance(clf, DecisionTreeClassifier):
+            # Plot and save a (part of a) Decision Tree
+            plt.figure(figsize=(50, 50))
+            tree.plot_tree(clf, filled=True, max_depth=8)
+            if not os.path.exists("plot_images"):
+                os.makedirs("plot_images")
+            plt.savefig(
+                "plot_images/" + datetime.now().isoformat() + "-Decision Tree.plot.png"
+            )
