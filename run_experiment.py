@@ -19,6 +19,7 @@ from datetime import datetime
 
 from matplotlib import pyplot as plt
 from sklearn import tree
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.tree import DecisionTreeClassifier
 
 from feature_extractor import (
@@ -188,3 +189,9 @@ if __name__ == "__main__":
             plt.savefig(
                 "plot_images/" + datetime.now().isoformat() + "-Decision Tree.plot.png"
             )
+
+        if isinstance(clf, MultinomialNB):
+            for i in range(0, len(clf.classes_)):
+                print(
+                    f"Class: {clf.classes_[i]} | Log Prior: {clf.class_log_prior_[i]} | Count: {clf.class_count_[i]}"
+                )
