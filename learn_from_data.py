@@ -51,7 +51,7 @@ def make_splits(
     X[:], y[:] = zip(*combined)
 
     train_split = int(len(y) * train)
-    dev_split = int((len(y) * train) * test)
+    dev_split = int((len(y) * train) * train)
 
     train_and_dev_X = X[:train_split]
     train_and_dev_y = y[:train_split]
