@@ -134,6 +134,7 @@ def show_confusion_matrix(test_y, pred_y, args, cm_title):
             plot_confusion_matrix,
         )  # Import here due to potential matplotlib issues
 
+        # TODO: better CM plots ConfusionMatrixDisplay.from_predictions()
         plot_confusion_matrix(cm, test_y, title=cm_title)
 
     print(classification_report(test_y, pred_y, labels=sorted(list(set(test_y)))))

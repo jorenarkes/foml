@@ -101,11 +101,12 @@ def get_line_features(
     for idx, column in enumerate(line):
         if idx == label_index:
             continue
-        if idx in feature_indices:
-            # TODO: Fix non-categorical
-            features.append(cat_to_id[column + "idx"])
+        # >>Patrick: hacky fix for using multiple text feature columns
+        # if idx in feature_indices:
+        #    # TODO: Fix non-categorical
+        #    features.append(cat_to_id[column + "idx"])
 
-        elif idx == text_index:
+        elif idx == text_index or idx in feature_indices:
             sentence_features = []
 
             if args.nwords:
