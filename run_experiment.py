@@ -57,7 +57,7 @@ if __name__ == "__main__":
         nargs="+",
         default=None,
     )
-    parser.add_argument('--label', type=str, default='label')
+    parser.add_argument('--label', type=str, nargs='?', const='label')
     parser.add_argument("--features", nargs="+", default=[])
     parser.add_argument(
         "--dtype", help="datatype in file", type=str, default=None
