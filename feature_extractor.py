@@ -32,7 +32,12 @@ def read_features_from_csv(args: argparse.Namespace) -> Tuple[List, np.ndarray]:
     with open(file=args.csv, mode="r", encoding="utf-8", errors="ignore") as csvfile:
         csv_reader = csv.reader(csvfile, delimiter=args.delimiter)
         header: List[str] = next(csv_reader)
-        label_index: int = header.index("label")
+        try:
+            label_index: int = header.index(args.label)
+        except ValueError:
+            logging.warning(f"Label \'{args.label}\' not found in header")
+            logging.info("Setting label to default: \'label\'.")
+            label_index: int = header.index("label")
         text_index: int = -1
 
         try:
