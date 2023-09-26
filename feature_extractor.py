@@ -39,6 +39,9 @@ def read_features_from_csv(args: argparse.Namespace) -> Tuple[List, np.ndarray]:
             logging.info("Setting label to the default label: \'label\'.")
             label_index: int = header.index("label")
         text_index: int = -1
+        
+        args.cat_features = [feat + '-cat' for feat in args.cat_features]
+        args.features = args.cat_features + args.num_features
 
         try:
             if args.features is not None:
