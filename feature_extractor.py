@@ -112,23 +112,26 @@ def get_line_features(
         #    features.append(cat_to_id[column + "idx"])
 
         elif idx == text_index or idx in feature_indices:
-            sentence_features = []
+            if feature_dtypes[idx] == np.float32:
+                features.append(cat_to_id[column + "idx"])
+            elif feature_dtypes[idx] == np.ndarray:
+                sentence_features = []
 
-            if args.nwords:
-                for n in range(args.nwords):
-                    ngrams = find_ngrams(column.split(), n + 1)
-                    sentence_features.extend(
-                        [cat_to_id[" ".join(ngram)] for ngram in ngrams]
-                    )
+                if args.nwords:
+                    for n in range(args.nwords):
+                        ngrams = find_ngrams(column.split(), n + 1)
+                        sentence_features.extend(
+                            [cat_to_id[" ".join(ngram)] for ngram in ngrams]
+                        )
 
-            if args.nchars:
-                for n in range(args.nchars):
-                    ngrams = find_ngrams(" ".join(column.split()), n + 1)
-                    sentence_features.extend(
-                        [cat_to_id[" ".join(ngram)] for ngram in ngrams]
-                    )
-
-            features.extend(sentence_features)
+                if args.nchars:
+                    for n in range(args.nchars):
+                        ngrams = find_ngrams(" ".join(column.split()), n + 1)
+                        sentence_features.extend(
+                            [cat_to_id[" ".join(ngram)] for ngram in ngrams]
+                        )
+    
+                features.extend(sentence_features)
 
     features = np.asarray(features)
 
