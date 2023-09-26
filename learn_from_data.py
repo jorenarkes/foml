@@ -26,7 +26,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 
-# random.seed(1337)
+random.seed(1337)
 logging.basicConfig(format="%(levelname)s %(message)s", level=logging.DEBUG)
 
 
