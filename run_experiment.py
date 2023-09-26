@@ -58,8 +58,8 @@ if __name__ == "__main__":
         default=None,
     )
     parser.add_argument('--label', type=str, nargs='?', const='label')
-    parser.add_argument("--cat_features", nargs="*", default=[])
-    parser.add_argument("--num_features", nargs="*", default=[])
+    parser.add_argument("--cat_features", nargs="*", default=[], help="Categorical Features")
+    parser.add_argument("--num_features", nargs="*", default=[], help="Numerical Features")
     parser.add_argument(
         "--dtype", help="datatype in file", type=str, default=None
     )  # TODO: Not implemented
