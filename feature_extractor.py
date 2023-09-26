@@ -113,7 +113,7 @@ def get_line_features(
 
         elif idx == text_index or idx in feature_indices:
             if feature_dtypes[idx] == np.float32:
-                features.append(cat_to_id[column + "idx"])
+                features.extend(cat_to_id[column + "idx"])
             elif feature_dtypes[idx] == np.ndarray:
                 sentence_features = []
 
