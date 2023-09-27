@@ -39,9 +39,12 @@ def read_features_from_csv(args: argparse.Namespace) -> Tuple[List, np.ndarray]:
             logging.info("Setting label to the default label: \'label\'.")
             label_index: int = header.index("label")
         text_index: int = -1
-        
-        args.cat_features = [feat + '-cat' for feat in args.cat_features]
+
         args.features = args.cat_features + args.num_features
+        args.cat_features = [feat + '-cat' for feat in args.cat_features]
+        args.comb_features = args.cat_features + args.num_features
+
+        assert len(args.features) == len(args.comb_features), f"Features and Comb features are not the same length"
 
         try:
             if args.features is not None:
@@ -57,14 +60,12 @@ def read_features_from_csv(args: argparse.Namespace) -> Tuple[List, np.ndarray]:
         feature_indices: List[int] = []
 
         for feature in args.features:
-            if feature == "text-cat" and text_index >= 0:
-                continue
-            elif feature in header:
+            if feature in header:
                 feature_indices.append(header.index(feature))
             else:
                 logging.warning(f"Feature {feature} not found in header")
 
-        types = get_column_types(header)
+        types = get_column_types(args.comb_features)
 
         for line in csv_reader:
             label, features = get_line_features(
@@ -77,16 +78,27 @@ def read_features_from_csv(args: argparse.Namespace) -> Tuple[List, np.ndarray]:
     return X, np.asarray(y, dtype=str)
 
 
-def get_column_types(header: List[str]) -> np.ndarray:
-    types: np.ndarray = np.zeros((len(header),), dtype=np.object)
+def get_column_types(comb_feature_list: List[str]) -> np.ndarray:
+    types: np.ndarray = np.zeros((len(comb_feature_list),), dtype=np.object)
 
-    for idx, name in enumerate(header):
+    for idx, name in enumerate(comb_feature_list):
         if "cat" in name:
             types[idx] = np.ndarray  # TODO
         else:
             types[idx] = np.float32
 
     return types
+
+# def get_column_types(header: List[str]) -> np.ndarray:
+#     types: np.ndarray = np.zeros((len(header),), dtype=np.object)
+
+#     for idx, name in enumerate(header):
+#         if "cat" in name:
+#             types[idx] = np.ndarray  # TODO
+#         else:
+#             types[idx] = np.float32
+
+#     return types
 
 
 def get_line_features(
@@ -105,9 +117,12 @@ def get_line_features(
     # * Lemmatisation etc. for text
     label: List[int] = line[label_index]
     features: List[str] = []
+    print(feature_dtypes)
 
     for idx, column in enumerate(line):
-        if idx == label_index:
+        if idx == len(feature_dtypes):
+            break
+        elif idx == label_index:
             continue
         # >>Patrick: hacky fix for using multiple text feature columns
         # if idx in feature_indices:
