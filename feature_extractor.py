@@ -65,7 +65,7 @@ def read_features_from_csv(args: argparse.Namespace) -> Tuple[List, np.ndarray]:
             else:
                 logging.warning(f"Feature {feature} not found in header")
 
-        types = get_column_types(args.comb_features)
+        types = get_column_types(header)
 
         for line in csv_reader:
             label, features = get_line_features(
@@ -117,7 +117,6 @@ def get_line_features(
     # * Lemmatisation etc. for text
     label: List[int] = line[label_index]
     features: List[str] = []
-    print(feature_dtypes)
 
     for idx, column in enumerate(line):
         if idx == len(feature_dtypes):
